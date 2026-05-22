@@ -1,0 +1,52 @@
+If you're unsure which version you’re on, run:
+
+] cat /etc/os-release
+
+output:
+
+NAME="Amazon Linux"
+VERSION="2023"
+ID="amzn"
+ID_LIKE="fedora"
+VERSION_ID="2023"
+PLATFORM_ID="platform:al2023"
+PRETTY_NAME="Amazon Linux 2023.11.20260514"
+ANSI_COLOR="0;33"
+CPE_NAME="cpe:2.3:o:amazon:amazon_linux:2023"
+HOME_URL="https://aws.amazon.com/linux/amazon-linux-2023/"
+DOCUMENTATION_URL="https://docs.aws.amazon.com/linux/"
+SUPPORT_URL="https://aws.amazon.com/premiumsupport/"
+BUG_REPORT_URL="https://github.com/amazonlinux/amazon-linux-2023"
+VENDOR_NAME="AWS"
+VENDOR_URL="https://aws.amazon.com/"
+SUPPORT_END="2029-06-30"
+
+----------------------------------------------------------------------------------------
+Q. Which linux folder is suitable to keep our workspace
+A. /home/ec2-user/workspace
+----------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------
+Q. How to create workspace
+A. 	] mkdir -p ~/workspace
+	] cd ~/workspace
+----------------------------------------------------------------------------------------
+
+Best Practice Summary
+----------------------------------------------------------------------------------------
+Use 				Case Recommended 
+----------------------------------------------------------------------------------------
+Personal development		~/workspace 
+Team/shared apps		/opt/workspace
+Web server projects		/var/www
+Production services		/srv
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Q. How to exit from nano command after adding text
+A. Quick Summary
+
+Action			Keys	
+Save + Exit		Ctrl + X, then Y, then Enter
+Exit without saving	Ctrl + X, then N
+----------------------------------------------------------------------------------------

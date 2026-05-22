@@ -1,0 +1,61 @@
+install
+
+	] sudo dnf install git -y
+
+verify installation
+
+	] git --version
+
+optional (recommended)
+	] git config --global user.name "Your Name"
+	] git config --global user.email "your-email@example.com"
+
+----------------------------------------------------------------------------------------
+Q. How to login into github.com in amazon linux
+A. Using SSH (Best for long-term use)
+
+1. Generate SSH key
+	] ssh-keygen -t ed25519 -C "your-email@example.com" 
+		###################################################################################	
+		## You should use the same email ID that is associated with your GitHub account ###
+		## Go here: https://github.com/settings/emails> 				###
+		###################################################################################
+2. Copy public key
+	] cat ~/.ssh/id_ed25519.pub
+
+3. Add key to GitHub
+	Go to: https://github.com/settings/keys
+	Click New SSH Key
+	Paste the key
+
+4. Test connection
+	] ssh -T git@github.com
+
+	Expected:
+	Hi username! You've successfully authenticated...
+
+5. Clone using SSH
+	] git clone git@github.com:username/repo.git
+
+Best Recommendation
+
+Method 			When to Use 
+----------------------------------------------------------------------------------------
+HTTPS + Token		Beginner / quick setup
+SSH 			Best for DevOps / Terraform / daily use
+GitHub CLI		Advanced / automation
+
+----------------------------------------------------------------------------------------
+
+Q. How to avoid every time entering password for git action like push etc. 
+A. This happens because your SSH key has a passphrase, and the system isn’t remembering it. You can fix it so you don’t have to enter it every time
+	Best Solution (Recommended): Use SSH Agent
+	Start SSH agent
+		] eval "$(ssh-agent -s)"
+	Add your key once
+		] ssh-add ~/.ssh/id_ed25519
+
+
+
+
+

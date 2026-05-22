@@ -1,0 +1,24 @@
+Amazon Linux 2023
+1. Install required utilities
+	] sudo dnf install -y dnf-plugins-core
+
+2. Add HashiCorp repository
+	] sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repoShow more lines
+
+3. Install Terraform
+  	] sudo dnf install terraform -y
+
+Verify installation
+	] terraform -version
+
+Alternative (Manual install - works everywhere), If repo fails, you can install manually:
+	] sudo yum install -y unzip 
+	] curl -O https://releases.hashicorp.com/terraform/<VERSION>/terraform_<VERSION>_linux_amd64.zip
+	] unzip terraform_<VERSION>_linux_amd64.zip
+	] sudo mv terraform /usr/local/bin/Show more lines
+
+# Replace <VERSION> with the latest version (e.g., 1.8.5). #
+# google for latest version #
+
+Verify installation
+	] terraform -version
