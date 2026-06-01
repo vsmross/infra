@@ -1,26 +1,54 @@
-# --- 1. TERRAFORM & PROVIDER CONFIGURATION ---
-terraform {
-  required_version = ">= 1.0.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-    archive = {
-      source  = "hashicorp/archive"
-      version = "~> 2.0"
-    }
+
+# Create a instance
+# resource "aws_instance" "example" {
+#   ami           = "resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
+#   instance_type = terraform.workspace == "prod" ? "t3.large" : "t3.micro"
+# 
+#   tags = {
+#     Name = var.devInstanceName
+#   }
+# }
+
+# Create a VPC
+resource "aws_vpc" "example" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    name = "dev-vpc-01"
   }
 }
 
-provider "aws" {
-  region = "us-east-1" # Change to your preferred AWS region
+# 2. Local Variables
+locals {
+  function_name = "hotel-addhotel"
+  src_dir       = "${path.module}/src"
+  publish_dir   = "${path.module}/src/bin/Release/net8.0/publish"
+  output_zip    = "${path.module}/hotel-addhotel-function.zip"
 }
 
-# --- 2. IAM ROLE & POLICIES FOR LAMBDA ---
-# Create the execution role that Lambda assumes
+# 3. Automate .NET Build and Publish via local-exec
+resource "null_resource" "build_dotnet_lambda" {
+  triggers = {
+    always_run = timestamp() # Ensures it recompiles every time you apply
+  }
+
+  provisioner "local-exec" {
+    command     = "dotnet publish -c Release --runtime linux-x64 --self-contained false"
+    working_dir = local.src_dir
+  }
+}
+
+# 4. Zip the published files
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = local.publish_dir
+  output_path = local.output_zip
+
+  depends_on = [null_resource.build_dotnet_lambda]
+}
+
+# 5. IAM Role for Lambda
 resource "aws_iam_role" "lambda_role" {
-  name = "my_lambda_execution_role"
+  name = "${local.function_name}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -36,47 +64,27 @@ resource "aws_iam_role" "lambda_role" {
   })
 }
 
-# Attach basic execution policy to allow CloudWatch logging
+# 6. Attach Basic Execution Policy for CloudWatch Logs
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-# --- 3. SOURCE CODE ARCHIVING ---
-# Automatically ZIP the 'src' directory before deployment
-data "archive_file" "lambda_zip" {
-  type        = "zip"
-  source_dir  = "${path.module}/src"
-  output_path = "${path.module}/bin/lambda.zip"
-}
-
-# --- 4. LAMBDA FUNCTION RESOURCE ---
-resource "aws_lambda_function" "my_lambda" {
+# 7. Provision the AWS Lambda Function
+resource "aws_lambda_function" "dotnet_lambda" {
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  
-  function_name    = "my-terraform-lambda"
+  function_name    = local.function_name
   role             = aws_iam_role.lambda_role.arn
-  runtime          = "python3.12"
-  handler          = "index.handler" # Matches file name (index.py) and function name (handler)
-  
-  timeout          = 10
-  memory_size      = 128
+  runtime          = "dotnet8"
+  timeout          = 15
+  memory_size      = 256
 
-  # Optional environment variables
-  environment {
-    variables = {
-      ENV_NAME = "production"
-    }
-  }
+  # Format: AssemblyName::Namespace.ClassName::MethodName
+  handler = "HotelMan_HotelAdmin::HotelMan_HotelAdmin.HotelAdmin::AddHotel" 
 
-  # Ensure role policy is attached before the function is built
-  depends_on = [aws_iam_role_policy_attachment.lambda_logs]
-}
-
-# --- 5. CLOUDWATCH LOG GROUP ---
-# Explicitly managing the log group ensures logs are cleaned up on terraform destroy
-resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  name              = "/aws/lambda/${aws_lambda_function.my_lambda.function_name}"
-  retention_in_days = 7
+  depends_on = [
+    aws_iam_role_policy_attachment.lambda_logs,
+    data.archive_file.lambda_zip
+  ]
 }
