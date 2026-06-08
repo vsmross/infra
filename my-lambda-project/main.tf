@@ -17,11 +17,33 @@ resource "aws_vpc" "example" {
   }
 }
 
+module "ec2" {
+  source        = "./modules/ec2"
+  instance_type = "t2.micro"
+  key_name      = var.key_name
+}
+
+module "dynamodb" {
+  source     = "./modules/dynamodb"
+  table_name = "my-table"
+}
+
+module "lambda" {
+  source          = "./modules/lambda"
+  function_name   = "my-lambda"
+  dynamodb_table  = module.dynamodb.table_name
+}
+
+module "apigateway" {
+  source        = "./modules/apigateway"
+  lambda_arn    = module.lambda.lambda_arn
+}
+
 # 2. Local Variables
 locals {
-  function_name = "hotel-addhotel"
-  src_dir       = "${path.module}/src"
-  publish_dir   = "${path.module}/src/bin/Release/net8.0/publish"
+  function_name = "hotel-add-hotel"
+  src_dir       = "${path.module}/HotelMan_HotelAdmin"
+  publish_dir   = "${path.module}/HotelMan_HotelAdmin/bin/Release/net8.0/linux-x64/publish"
   output_zip    = "${path.module}/hotel-addhotel-function.zip"
 }
 
