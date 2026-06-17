@@ -52,8 +52,7 @@ sudo nano /etc/xrdp/startwm.sh
 #!/bin/sh
 unset DBUS_SESSION_BUS_ADDRESS
 unset XDG_RUNTIME_DIR
-startxfce4
-. /etc/X11/Xsession
+exec startxfce4
 
 #2. Fix user session file
 
