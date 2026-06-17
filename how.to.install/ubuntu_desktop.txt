@@ -1,10 +1,91 @@
+#1. Update system
 sudo apt upgrade -y
 
+#2. Install desktop environment Recommended (lightweight – best for EC2):
 sudo apt install xfce4 xfce4-goodies -y
+sudo apt install dbus-x11 -y
 
+#If you want full Ubuntu desktop (heavier):
+#sudo apt install ubuntu-desktop -y
+
+#3. Install XRDP (RDP server)
 sudo apt install xrdp -y
 
-
+#4. Start & enable XRDP
 sudo systemctl enable xrdp
-
 sudo systemctl start xrdp
+
+#5. Configure desktop session
+echo "startxfce4" > ~/.xsession
+chmod +x ~/.xsession
+
+#6. Allow XRDP through firewall
+sudo ufw allow 3389
+
+#7. Add ubuntu user to ssl-cert group
+sudo adduser ubuntu ssl-cert
+
+#8. Set password (required for RDP login)
+sudo passwd ubuntu
+
+#9. Restart XRDP
+sudo systemctl restart xrdp
+
+#10. Open AWS Security Group
+#Port 3389 (RDP)
+
+###########     Connect from Windows     ###########
+##                                               ###
+##     Open Remote Desktop (mstsc)               ###
+##     Enter: <your-ec2-public-ip>:3389          ###
+##     Login:                                    ###
+##     Username: ubuntu                          ###
+##     Password: (you set above)                 ###
+####################################################
+
+#1. Fix XRDP session configuration
+
+sudo nano /etc/xrdp/startwm.sh
+
+#Final file should look like:
+
+#!/bin/sh
+unset DBUS_SESSION_BUS_ADDRESS
+unset XDG_RUNTIME_DIR
+startxfce4
+. /etc/X11/Xsession
+
+#2. Fix user session file
+
+echo "startxfce4" > ~/.xsession
+chmod +x ~/.xsession
+
+#3. Fix permissions (very important)
+
+sudo chown -R ubuntu:ubuntu /home/ubuntu
+
+#4. Add user to ssl-cert group
+
+sudo adduser ubuntu ssl-cert
+
+# 5. Restart services
+sudo systemctl daemon-reexec
+sudo systemctl restart xrdp
+
+# 7. Reboot (recommended)
+sudo reboot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
