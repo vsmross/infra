@@ -10,12 +10,12 @@
 # }
 
 # Create a VPC
-resource "aws_vpc" "example" {
-  cidr_block = "10.0.0.0/16"
-  tags = {
-    name = "dev-vpc-01"
-  }
-}
+# resource "aws_vpc" "example" {
+#   cidr_block = "10.0.0.0/16"
+#   tags = {
+#     name = "dev-vpc-01"
+#   }
+# }
 
 # module "ec2" {
 #   source        = "./modules/ec2"
@@ -25,7 +25,7 @@ resource "aws_vpc" "example" {
 
 module "dynamodb" {
   source     = "./modules/dynamodb"
-  table_name = "my-table"
+  table_name = "hotels"
 }
 
 # module "lambda" {

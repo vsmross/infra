@@ -1,4 +1,7 @@
 ..su.statuso
 /.vs
-/my-lambda-project/.vs/my-lambda-project.slnx/FileContentIndex/7d548ff4-8d98-49d3-b629-f4e846124d1d.vsidx
-/my-lambda-project/.vs
+/build-hotel-infra/.vs/my-lambda-project.slnx/FileContentIndex/7d548ff4-8d98-49d3-b629-f4e846124d1d.vsidx
+/build-hotel-infra/.vs
+/build-hotel-infra/.terraform.lock.hcl
+/build-hotel-infra/.terraform
+
