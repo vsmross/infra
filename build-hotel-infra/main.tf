@@ -28,15 +28,15 @@ module "dynamodb" {
   table_name = "hotels"
 }
 
-module "cognito" {
-  source            = "./modules/cognito"
-  user_pool_name    = "Hotel-booking-users"
-  region            = var.region
-  user_pool_id      = ""
-  client_id         = ""
-  cognito_domain    = ""
-  cognito_login_url = ""
-}
+# module "cognito" {
+#   source            = "./modules/cognito"
+#   user_pool_name    = "Hotel-booking-users"
+#   region            = var.region
+#   user_pool_id      = ""
+#   client_id         = ""
+#   cognito_domain    = ""
+#   cognito_login_url = ""
+# }
 
 # module "lambda" {
 #   source          = "./modules/lambda"
