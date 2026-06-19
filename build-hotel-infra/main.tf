@@ -29,10 +29,14 @@ module "dynamodb" {
 }
 
 module "cognito" {
-  source     = "./modules/cognito"
-  user_pool_name = "Hotel-booking-users"
+  source            = "./modules/cognito"
+  user_pool_name    = "Hotel-booking-users"
+  region            = var.region
+  user_pool_id      = ""
+  client_id         = ""
+  cognito_domain    = ""
+  cognito_login_url = ""
 }
-
 
 # module "lambda" {
 #   source          = "./modules/lambda"
