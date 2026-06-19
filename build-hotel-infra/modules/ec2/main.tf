@@ -36,3 +36,13 @@ resource "aws_instance" "ec2" {
     Name = "Terraform-EC2"
   }
 }
+
+# Create a instance
+# resource "aws_instance" "example" {
+#   ami           = "resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
+#   instance_type = terraform.workspace == "prod" ? "t3.large" : "t3.micro"
+# 
+#   tags = {
+#     Name = var.devInstanceName
+#   }
+# }
