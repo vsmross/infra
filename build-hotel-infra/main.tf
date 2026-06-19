@@ -23,7 +23,7 @@ module "cognito" {
 
 module "lambda" {
   source         = "./modules/lambda"
-  function_name  = "my-lambda"
+  function_name  = "Add-Hotel"
   dynamodb_table = module.dynamodb.table_name
   region         = var.region
   bucket_name    = "test-bucket"

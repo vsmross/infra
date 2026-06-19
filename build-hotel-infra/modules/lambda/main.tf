@@ -95,7 +95,7 @@ resource "aws_lambda_function" "hoteladmin" {
   handler       = "HotelMan_HotelAdmin::HotelMan_HotelAdmin.HotelAdmin::AddHotel"
 
   # Artifact from S3
-  s3_bucket = "my-lambda-artifacts-bucket"
+  s3_bucket = "hotel-lambda-artifacts-bucket"
   s3_key    = "lambda/hoteladmin-lambda.zip"
 
   environment {
