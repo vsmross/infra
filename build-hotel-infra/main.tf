@@ -28,6 +28,12 @@ module "dynamodb" {
   table_name = "hotels"
 }
 
+module "cognito" {
+  source     = "./modules/cognito"
+  user_pool_name = "Hotel-booking-users"
+}
+
+
 # module "lambda" {
 #   source          = "./modules/lambda"
 #   function_name   = "my-lambda"
