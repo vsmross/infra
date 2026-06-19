@@ -63,12 +63,15 @@ resource "aws_cognito_user_pool_client" "client" {
     "http://localhost:8080/hotel"
   ]
 
+  # Enable OAuth
   allowed_oauth_flows_user_pool_client = true
 
+  # IMPlicit Grant Flow
   allowed_oauth_flows = [
-    "code"
+    "implicit"
   ]
 
+  # Scopes
   allowed_oauth_scopes = [
     "email",
     "openid",
@@ -87,82 +90,108 @@ resource "aws_cognito_user_pool_client" "client" {
 
 # ---------------- USERS ----------------
 
-resource "aws_cognito_user" "admin" {
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  username     = "admin@mydomain.com"
+# resource "aws_cognito_user" "admin" {
+#   user_pool_id = aws_cognito_user_pool.hotel_pool.id
+#   username     = "admin@mydomain.com"
 
-  attributes = {
-    email          = "admin@mydomain.com"
-    email_verified = "true"
+#   attributes = {
+#     email          = "admin@mydomain.com"
+#     email_verified = "true"
+#   }
+
+#   temporary_password = var.user_temp_pwd
+# }
+
+# resource "aws_cognito_user" "manager" {
+#   user_pool_id = aws_cognito_user_pool.hotel_pool.id
+#   username     = "hmanager@mydomain.com"
+
+#   attributes = {
+#     email          = "hmanager@mydomain.com"
+#     email_verified = "true"
+#   }
+
+#   temporary_password = var.user_temp_pwd
+# }
+
+# resource "aws_cognito_user" "buser" {
+#   user_pool_id = aws_cognito_user_pool.hotel_pool.id
+#   username     = "buser1@mydomain.com"
+
+#   attributes = {
+#     email          = "buser1@mydomain.com"
+#     email_verified = "true"
+#   }
+
+#   temporary_password = var.user_temp_pwd
+# }
+
+# resource "aws_cognito_user" "guest" {
+#   user_pool_id = aws_cognito_user_pool.hotel_pool.id
+#   username     = "guest1@mydomain.com"
+
+#   attributes = {
+#     email          = "guest1@mydomain.com"
+#     email_verified = "true"
+#   }
+
+#   temporary_password = var.user_temp_pwd
+# }
+
+# locals {
+#   users = [
+#     "admin@mydomain.com",
+#     "hmanager@mydomain.com",
+#     "buser1@mydomain.com",
+#     "guest1@mydomain.com"
+#   ]
+# }
+
+# resource "aws_cognito_user" "users" {
+#   for_each = toset(local.users)
+
+#   user_pool_id = aws_cognito_user_pool.hotel_pool.id
+#   username     = each.value
+
+#   attributes = {
+#     email          = each.value
+#     email_verified = "true"
+#     given_name     = "Test"
+#     family_name    = "User"
+#     address        = "Pune, India"
+#   }
+
+#   temporary_password = "TempPass@123"
+# }
+
+locals {
+  user_group_map = {
+    "admin@mydomain.com"   = "admin"
+    "hmanager@mydomain.com" = "manager"
+    "guest1@mydomain.com"  = "guest"
   }
-
-  temporary_password = var.user_temp_pwd
 }
 
-resource "aws_cognito_user" "manager" {
+# ---------------- USERS ----------------
+
+resource "aws_cognito_user" "users" {
+  for_each = local.user_group_map
+
   user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  username     = "hmanager@mydomain.com"
+  username     = each.key
 
   attributes = {
-    email          = "hmanager@mydomain.com"
+    email          = each.key
     email_verified = "true"
-  }
-
-  temporary_password = var.user_temp_pwd
-}
-
-resource "aws_cognito_user" "buser" {
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  username     = "buser1@mydomain.com"
-
-  attributes = {
-    email          = "buser1@mydomain.com"
-    email_verified = "true"
-  }
-
-  temporary_password = var.user_temp_pwd
-}
-
-resource "aws_cognito_user" "guest" {
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  username     = "guest1@mydomain.com"
-
-  attributes = {
-    email          = "guest1@mydomain.com"
-    email_verified = "true"
+    given_name     = "Test"
+    family_name    = "User"
+    address        = "Pune, India"
   }
 
   temporary_password = var.user_temp_pwd
 }
 
 # ---------------- GROUPS ----------------
-
-resource "aws_cognito_user_group" "admin_group" {
-  name         = "admin"
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  description  = "Admin users"
-}
-
-resource "aws_cognito_user_group" "manager_group" {
-  name         = "manager"
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  description  = "Manager users"
-}
-
-resource "aws_cognito_user_group" "guest_group" {
-  name         = "guest"
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  description  = "Guest users"
-}
-
-locals {
-  user_group_map = {
-    "admin@mydomain.com"   = "admin"
-    "hmanager@mydomain.com" = "manager"
-    "buser1@mydomain.com"  = "guest"
-    "guest1@mydomain.com"  = "guest"
-  }
-}
 
 resource "aws_cognito_user_in_group" "assignments" {
   for_each = local.user_group_map
