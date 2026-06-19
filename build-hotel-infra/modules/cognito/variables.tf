@@ -1,7 +1,7 @@
 variable "user_pool_name" {}
 variable "region" {}
 variable "user_pool_id" {}
-# variable "user_pool_domain" {}
+variable "user_pool_domain" {}
 variable "client_id" {}
 variable "cognito_domain" {}
 variable "cognito_login_url" {}

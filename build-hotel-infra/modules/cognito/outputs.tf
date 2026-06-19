@@ -7,10 +7,10 @@ output "user_pool_id" {
   value       = aws_cognito_user_pool.hotel_pool.id
 }
 
-# output "user_pool_domain" {
-#     description = "Cognito User Pool Domain"
-#     value       = aws_cognito_user_pool.domain.name
-# }
+output "user_pool_domain" {
+    description = "Cognito User Pool Domain"
+    value       = aws_cognito_user_pool_domain.domain.domain
+}
 
 output "client_id" {
   description = "Cognito App Client ID"
@@ -19,10 +19,10 @@ output "client_id" {
 
 output "cognito_domain" {
   description = "Cognito Hosted UI Domain"
-  value       = aws_cognito_user_pool.hotel_pool.domain
+  value       = aws_cognito_user_pool_domain.domain.domain
 }
 
 output "cognito_login_url" {
   description = "Cognito Hosted UI Login URL"
-  value = "https://${aws_cognito_user_pool.hotel_pool.domain}.auth.${var.region}.amazoncognito.com/login"
+  value = "https://${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com/login"
 }

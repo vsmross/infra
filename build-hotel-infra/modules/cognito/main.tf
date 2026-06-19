@@ -83,10 +83,10 @@ resource "aws_cognito_user_pool_client" "client" {
   ]
 }
 
-# resource "aws_cognito_user_pool_domain" "domain" {
-#   domain       = "hotel-app-auth-120888"   # must be globally unique
-#   user_pool_id = aws_cognito_user_pool.hotel_pool.id
-# }
+resource "aws_cognito_user_pool_domain" "domain" {
+  domain       = "hotel-app-auth-120888"   # must be globally unique
+  user_pool_id = aws_cognito_user_pool.hotel_pool.id
+}
 
 # ---------------- USERS ----------------
 
@@ -194,6 +194,7 @@ resource "aws_cognito_user" "users" {
 # ---------------- GROUPS ----------------
 
 resource "aws_cognito_user_in_group" "assignments" {
+  depends_on = [ aws_cognito_user.users ]
   for_each = local.user_group_map
 
   user_pool_id = aws_cognito_user_pool.hotel_pool.id
