@@ -84,7 +84,7 @@ resource "aws_cognito_user_pool_client" "client" {
 }
 
 resource "aws_cognito_user_pool_domain" "domain" {
-  domain       = "hotel-app-auth-120888"   # must be globally unique
+  domain       = "hotel-app-auth-120888" # must be globally unique
   user_pool_id = aws_cognito_user_pool.hotel_pool.id
 }
 
@@ -166,9 +166,9 @@ resource "aws_cognito_user_pool_domain" "domain" {
 
 locals {
   user_group_map = {
-    "admin@mydomain.com"   = "admin"
+    "admin@mydomain.com"    = "admin"
     "hmanager@mydomain.com" = "manager"
-    "guest1@mydomain.com"  = "guest"
+    "guest1@mydomain.com"   = "guest"
   }
 }
 

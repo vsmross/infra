@@ -8,8 +8,8 @@ output "user_pool_id" {
 }
 
 output "user_pool_domain" {
-    description = "Cognito User Pool Domain"
-    value       = aws_cognito_user_pool_domain.domain.domain
+  description = "Cognito User Pool Domain"
+  value       = aws_cognito_user_pool_domain.domain.domain
 }
 
 output "client_id" {
@@ -24,5 +24,5 @@ output "cognito_domain" {
 
 output "cognito_login_url" {
   description = "Cognito Hosted UI Login URL"
-  value = "https://${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com/login"
+  value       = "https://${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com/login"
 }

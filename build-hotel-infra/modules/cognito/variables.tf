@@ -6,7 +6,7 @@ variable "client_id" {}
 variable "cognito_domain" {}
 variable "cognito_login_url" {}
 variable "user_temp_pwd" {
-    description = "Password to set at the time of user creation"
-    type = string
-    default = "Hotel@1234"
+  description = "Password to set at the time of user creation"
+  type        = string
+  default     = "Hotel@1234"
 }

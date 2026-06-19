@@ -20,7 +20,7 @@ resource "aws_dynamodb_table" "table" {
 
   attribute {
     name = "userid"
-    type = "S"   # String
+    type = "S" # String
   }
 
   attribute {
