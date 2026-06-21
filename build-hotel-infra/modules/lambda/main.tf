@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 resource "aws_lambda_function" "hoteladmin" {
   function_name = var.function_name
   role          = aws_iam_role.lambda_role.arn
-  runtime       = "dotnet8"
+  runtime       = "dotnet10"
   timeout       = 15
   memory_size   = 256
   handler       = "HotelMan_HotelAdmin::HotelMan_HotelAdmin.HotelAdmin::AddHotel"
