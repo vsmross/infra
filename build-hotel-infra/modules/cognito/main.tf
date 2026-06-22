@@ -45,6 +45,7 @@ resource "aws_cognito_user_pool" "hotel_pool" {
 
   tags = {
     Project = "HotelApp"
+    Environment = var.environment
   }
 }
 
@@ -84,7 +85,7 @@ resource "aws_cognito_user_pool_client" "client" {
 }
 
 resource "aws_cognito_user_pool_domain" "domain" {
-  domain       = "hotel-app-auth-120888" # must be globally unique
+  domain       = "hotel-app-auth-120888-${var.environment}" # must be globally unique
   user_pool_id = aws_cognito_user_pool.hotel_pool.id
 }
 

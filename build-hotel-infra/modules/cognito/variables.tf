@@ -10,3 +10,8 @@ variable "user_temp_pwd" {
   type        = string
   default     = "Hotel@1234"
 }
+variable "environment" {
+  description = "Application environment"
+  type        = string
+  default     = "dev"
+}

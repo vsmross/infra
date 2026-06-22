@@ -1,3 +1,3 @@
 environment    = "dev"
-lambda_bucket  = "hotel-lambda-artifacts-bucket-${var.environment}"
-state_bucket   = "hotel-app-terraform-state-bucket-${var.environment}"
+lambda_bucket  = "hotel-app-lambda-artifacts-bucket-dev"
+state_bucket   = "hotel-app-terraform-state-bucket-dev"

@@ -19,6 +19,7 @@ module "cognito" {
   cognito_domain    = module.cognito.cognito_domain
   cognito_login_url = module.cognito.cognito_login_url
   user_pool_domain  = module.cognito.user_pool_domain
+  environment       = var.environment
 }
 
 module "lambda" {
@@ -28,7 +29,7 @@ module "lambda" {
   region         = var.region
   bucket_name    = "test-bucket"
   sns_topic      = "sns-topic"
-  environment = var.environment
+  environment    = var.environment
 }
 
 # module "apigateway" {
