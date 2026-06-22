@@ -1,0 +1,26 @@
+Deploy DEV:
+
+> terraform init -backend-config=backend/dev.hcl
+> terraform apply -var-file=env/dev.tfvars
+
+Deploy TEST:
+
+> terraform init -reconfigure -backend-config=backend/test.hcl
+> terraform apply -var-file=env/test.tfvars
+
+OPTIONAL: Use Workspaces (Alternative)
+terraform workspace new dev
+terraform workspace new test
+
+Use:
+resource "aws_lambda_function" "lambda" {
+  function_name = "hotel-lambda-${terraform.workspace}"
+}
+
+DEV pipeline:
+
+- run: terraform apply -var-file=env/dev.tfvars
+
+TEST pipeline
+
+- run: terraform apply -var-file=env/test.tfvars
