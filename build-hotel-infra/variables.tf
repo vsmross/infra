@@ -4,6 +4,10 @@ variable "region" {
   default     = "us-east-2"
 }
 
+variable "environment" {}
+variable "lambda_bucket" {}
+variable "state_bucket" {}
+
 # variable "devInstanceName" {
 #   type        = string
 #   description = "dev-app-01"
@@ -13,3 +17,5 @@ variable "region" {
 # variable "key_name" {
 #   description = "EC2 Key pair name"
 # }
+
+

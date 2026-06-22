@@ -28,6 +28,7 @@ module "lambda" {
   region         = var.region
   bucket_name    = "test-bucket"
   sns_topic      = "sns-topic"
+  environment = var.environment
 }
 
 # module "apigateway" {

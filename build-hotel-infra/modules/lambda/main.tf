@@ -87,7 +87,7 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 }
 
 resource "aws_lambda_function" "hoteladmin" {
-  function_name = var.function_name
+  function_name = "${var.function_name}-${var.environment}"
   role          = aws_iam_role.lambda_role.arn
   runtime       = "dotnet10"
   timeout       = 15
