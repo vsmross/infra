@@ -6,8 +6,9 @@
 # }
 
 module "dynamodb" {
-  source     = "./modules/dynamodb"
-  table_name = "hotels"
+  source      = "./modules/dynamodb"
+  table_name  = "Hotels"
+  environment = var.environment
 }
 
 module "cognito" {

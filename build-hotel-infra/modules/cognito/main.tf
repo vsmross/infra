@@ -44,7 +44,7 @@ resource "aws_cognito_user_pool" "hotel_pool" {
   }
 
   tags = {
-    Project = "HotelApp"
+    Project     = "HotelApp"
     Environment = var.environment
   }
 }
@@ -194,28 +194,18 @@ resource "aws_cognito_user" "users" {
 
 # ---------------- GROUPS ----------------
 
-resource "aws_cognito_user_group" "admin_group" {
-  name         = "admin"
+resource "aws_cognito_user_group" "groups" {
+  for_each     = local.user_group_map
   user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  description  = "Admin users"
-}
-
-resource "aws_cognito_user_group" "manager_group" {
-  name         = "manager"
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  description  = "Manager users"
-}
-
-resource "aws_cognito_user_group" "guest_group" {
-  name         = "guest"
-  user_pool_id = aws_cognito_user_pool.hotel_pool.id
-  description  = "Guest users"
+  name         = each.value
+  description  = "${each.value} users group"
 }
 
 # ---------------- GROUPS Assignments ----------------
 
 resource "aws_cognito_user_in_group" "assignments" {
-  for_each = local.user_group_map
+  depends_on = [aws_cognito_user.users, aws_cognito_user_group.groups]
+  for_each   = local.user_group_map
 
   user_pool_id = aws_cognito_user_pool.hotel_pool.id
   username     = each.key

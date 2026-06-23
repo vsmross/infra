@@ -11,7 +11,7 @@
 # }
 
 resource "aws_dynamodb_table" "table" {
-  name         = "Hotels"
+  name         = var.table_name
   billing_mode = "PAY_PER_REQUEST"
 
   # Primary Key
@@ -29,7 +29,7 @@ resource "aws_dynamodb_table" "table" {
   }
 
   tags = {
-    Environment = "dev"
+    Environment = var.environment
     Project     = "HotelApp"
   }
 }
@@ -69,9 +69,10 @@ locals {
 
 resource "aws_dynamodb_table_item" "hotels" {
   for_each   = local.hotels
-  table_name = "Hotels"
+  table_name = var.table_name
   hash_key   = "userid"
   range_key  = "id"
+  depends_on = [aws_dynamodb_table.table]
 
   item = jsonencode({
     userid   = { S = each.value.userid }
