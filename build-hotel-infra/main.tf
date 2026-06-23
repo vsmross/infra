@@ -33,6 +33,14 @@ module "lambda" {
   environment    = var.environment
 }
 
+module "s3" {
+  source        = "./modules/s3"
+  unique_number = var.app_unique_number
+  region        = var.region
+  environment   = var.environment
+  depends_on    = [module.lambda]
+}
+
 # module "apigateway" {
 #   source        = "./modules/apigateway"
 #   lambda_arn    = module.lambda.lambda_arn

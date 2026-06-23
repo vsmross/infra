@@ -7,6 +7,7 @@ variable "region" {
 variable "environment" {}
 variable "lambda_bucket" {}
 variable "state_bucket" {}
+variable "app_unique_number" {}
 
 # variable "devInstanceName" {
 #   type        = string
