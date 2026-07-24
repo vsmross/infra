@@ -1,3 +1,5 @@
+## Instruction for installing Ubuntu desktop.
+
 #1. Update system
 sudo apt upgrade -y
 
